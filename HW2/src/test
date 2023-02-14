@@ -1,0 +1,33 @@
+
+
+cd("HW2").
+
+erl -name sweden@10.93.8.183 -setcookie routy -connect_all false
+
+c(map).
+c(dijkstra).
+c(intf).
+c(hist).
+c(routy).
+
+routy:start(r1, stockholm).
+routy:start(r2, lund).
+routy:start(r3, goteborg).
+r1 ! {add, lund, {r2, 'sweden@10.93.8.183'}}.
+r2 ! {add, goteborg, {r3, 'sweden@10.93.8.183'}}.
+r3 ! {add, stockholm, {r1, 'sweden@10.93.8.183'}}.
+r1 ! broadcast.
+r2 ! broadcast.
+r3 ! broadcast.
+r1 ! update.
+r2 ! update.
+r3 ! update.
+r1 ! display.
+r2 ! display.
+r3 ! display.
+
+r1 ! {send, goteborg, 'hello'}.
+
+routy:stop(r1).
+routy:stop(r2).
+routy:stop(r3).
